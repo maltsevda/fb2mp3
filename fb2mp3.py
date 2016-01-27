@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # Denis Maltsev
 # 21.01.2016
 
-import sys, os, codecs
+import sys, os
 import xml.parsers.expat
 import pyvona
 
@@ -37,8 +38,8 @@ def char_data(data):
 	global par
 	par = par + data
 
-def	parse_fb2(book_name):
-	book_file = codecs.open(book_name, 'r', 'utf-8')
+def parse_fb2(book_name):
+	book_file = open(book_name, 'rb')
 	p = xml.parsers.expat.ParserCreate()
 	p.StartElementHandler = start_element
 	p.EndElementHandler = end_element
