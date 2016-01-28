@@ -31,12 +31,13 @@ def end_element(name):
 		par = par.strip()
 		if len(par) > 0:
 			book.append(par)
-	if name not in ['strong', 'emphasis', 'style']:
+	if name not in ['a', 'strong', 'emphasis', 'style']:
 		par = ''
 
 def char_data(data):
 	global par
 	par = par + data
+	par = par.replace('–', '-')
 
 def parse_fb2(book_name):
 	book_file = open(book_name, 'rb')
@@ -54,8 +55,8 @@ def make_mp3(book_name):
 	voice = pyvona.create_voice('GDNAICTDMLSLU5426OAA', '2qUFTF8ZF9wqy7xoGBY+YXLEu+M2Qqalf/pSrd9m')
 	voice.codec = 'mp3'
 	voice.region = 'ru-RU'
-	voice.speech_rate = 'fast' # x-slow, slow, medium, fast, x-fast
-	voice.voice_name = 'Maxim' # Tatyana, Maxim 
+	voice.speech_rate = 'medium' # x-slow, slow, medium, fast, x-fast
+	voice.voice_name = 'Tatyana' # Tatyana, Maxim 
 
 	title = os.path.splitext(book_name)[0]
 	if not os.path.exists(title):
