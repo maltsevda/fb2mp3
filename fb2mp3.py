@@ -68,7 +68,7 @@ def make_mp3(book_name):
 		os.makedirs(title)
 
 	index = 0
-	percent = 10
+	percent = 0
 	count = len(book)
 	for i, par in enumerate(book):
 		if len(par) > 3:
