@@ -11,33 +11,38 @@ import pyvona
 book = []
 par = ''
 body = False
+ignore = True
 
 #######################
 
+def modify(str):
+	return str.strip().replace('\n', ' ').replace('–', '-').replace('—', '-')
+
 def start_element(name, attrs):
-	global body, par
+	global body, par, ignore
 	if name == 'body':
 		body = True
 	if name == 'p':
 		par = '';
+		ignore = False
 
 def end_element(name):
-	global body, par, book
+	global body, par, book, ignore
 	if name == 'body':
 		body = False
 	if body == False:
 		return
 	if name == 'p':
-		par = par.strip()
+		ignore = True
+		par = modify(par)
 		if len(par) > 0:
 			book.append(par)
-	if name not in ['a', 'strong', 'emphasis', 'style']:
 		par = ''
 
 def char_data(data):
-	global par
-	par = par + data
-	par = par.replace('–', '-')
+	if not ignore:
+		global par
+		par = par + data
 
 def parse_fb2(book_name):
 	book_file = open(book_name, 'rb')
@@ -63,11 +68,28 @@ def make_mp3(book_name):
 		os.makedirs(title)
 
 	index = 0
-	for par in book:
+	percent = 10
+	count = len(book)
+	for i, par in enumerate(book):
 		if len(par) > 3:
 			file_name = '{0}/{0}{1:05}.mp3'.format(title, index) 
 			voice.fetch_voice(par, file_name)
 			index += 1
+		# progress bar
+		if i >= percent * count / 100:
+			sys.stdout.write('{0}%...'.format(percent))
+			sys.stdout.flush()
+			percent += 10
+	print('100%')
+
+#######################
+
+# def log_file(book_name):
+# 	title = os.path.splitext(book_name)[0]
+# 	f = open('_{0}.log'.format(title), 'w', encoding='utf-8')
+# 	for par in book:
+# 		f.write('{0}\n'.format(par))
+# 	f.close()
 
 #######################
 
