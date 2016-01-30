@@ -57,29 +57,38 @@ def parse_fb2(book_name):
 def make_mp3(book_name):
 	global book
 
+	# ivona voice settings
 	voice = pyvona.create_voice('GDNAICTDMLSLU5426OAA', '2qUFTF8ZF9wqy7xoGBY+YXLEu+M2Qqalf/pSrd9m')
 	voice.codec = 'mp3'
 	voice.region = 'ru-RU'
 	voice.speech_rate = 'medium' # x-slow, slow, medium, fast, x-fast
 	voice.voice_name = 'Tatyana' # Tatyana, Maxim 
 
+	# book folder
 	title = os.path.splitext(book_name)[0]
 	if not os.path.exists(title):
 		os.makedirs(title)
 
+	# start progress bar
+	sys.stdout.write('0%...')
+	sys.stdout.flush()
+
 	index = 0
-	percent = 0
+	percent = 10
 	count = len(book)
 	for i, par in enumerate(book):
+		# mp3 file 
 		if len(par) > 3:
 			file_name = '{0}/{0}{1:05}.mp3'.format(title, index) 
 			voice.fetch_voice(par, file_name)
 			index += 1
-		# progress bar
+		# process progress bar
 		if i >= percent * count / 100:
 			sys.stdout.write('{0}%...'.format(percent))
 			sys.stdout.flush()
 			percent += 10
+
+	# finish progress bar
 	print('100%')
 
 #######################
