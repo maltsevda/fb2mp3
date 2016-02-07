@@ -16,7 +16,11 @@ ignore = True
 #######################
 
 def modify(str):
-	return str.strip().replace('\n', ' ').replace('–', '-').replace('—', '-')
+	str = str.strip()
+	str = str.replace('\n', ' ')
+	str = str.replace(u'–', '-')
+	str = str.replace(u'—', '-')
+	return str
 
 def start_element(name, attrs):
 	global body, par, ignore
