@@ -27,7 +27,7 @@ def start_element(name, attrs):
 	if name == 'body':
 		body = True
 	if name == 'p':
-		par = '';
+		par = ''
 		ignore = False
 
 def end_element(name):
